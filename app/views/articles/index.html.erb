@@ -1,33 +1,56 @@
-<h1>Listing articles</h1>
+  <div class="show-article">show articles with a rating of less than 10</div>
+  <div class="clear"></div>
 
-<table>
-  <tr>
-    <th>Category</th>
-    <th>User</th>
-    <th>Title</th>
-    <th>Body</th>
-    <th>Url</th>
-    <th>Tags</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
+<div class="blog-content">
 <% @articles.each do |article| %>
-  <tr>
-    <td><%= article.category_id %></td>
-    <td><%= article.user_id %></td>
-    <td><%= article.title %></td>
-    <td><%= article.body %></td>
-    <td><%= article.url %></td>
-    <td><%= article.tags %></td>
-    <td><%= link_to 'Show', article %></td>
-    <td><%= link_to 'Edit', edit_article_path(article) %></td>
-    <td><%= link_to 'Destroy', article, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
+ <div class="blog-article">
+    <div class="blog-article-title">
+      <div class="category-title"><%= article.title %> | <%= article.title %></div>
+      <div class="article-rating">
+      rating:&nbsp;
+      <% if article.ratings.where(:user_identity => article.title + @remote_ip).count == 0 %>
+        <div class="rating-up">
+          <%= form_for([article, article.ratings.build]) do |f| %>
+            <%= hidden_field_tag("value", 1) %>
+            <%= hidden_field_tag("article", article.id) %>
+            <%= f.submit 'Up' %>
+          <% end %>
+      </div>
 
+      <span class="rating-size"><%= article.ratings.sum(:value) %></span>
+      <div class="rating-Down">
+          <%= form_for([article, article.ratings.build]) do |f| %>
+            <%= hidden_field_tag("value", -1) %>
+            <%= hidden_field_tag("article", article.id) %>
+            <%= f.submit 'Down' %>
+          <% end %>
+      </div>
+      <% else %>
+        <span class="rating-size"><%= article.ratings.sum(:value) %></span>
+      <% end %>
+      </div>
+      <div class="article-date">Created: <%= article.created_at.to_date %></div>
+      <div class="clear"></div>
+    </div>
+    <div class="blog-article-body">
+      <%= article.body %>
+    </div>
+    <div class="blog-article-footer">
+      <div class="footer-info">
+        url: <%= article.url %> | tags: <%= article.tags %> | <%= link_to(article.comments.count.to_s+'  comments', article) %>
+      </div>
+      <% if user_signed_in? %>
+      <div class="footer-key">
+        <%= link_to 'Edit', edit_article_path(article) %>&nbsp;|&nbsp; <%= link_to 'Destroy', article, :confirm => 'Are you sure?', :method => :delete %>
+      </div>
+      <% end %>
+      <div class="clear"></div>
+    </div>
+  </div>
+<% end %>
+</div>
 <br />
 
+
 <%= link_to 'New Article', new_article_path %>
+

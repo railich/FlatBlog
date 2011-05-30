@@ -6,6 +6,7 @@ class ArticlesController < ApplicationController
   
   def index
     @articles = Article.all
+    @remote_ip = request.remote_ip().to_s
 
     respond_to do |format|
       format.html 

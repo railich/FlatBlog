@@ -4,7 +4,7 @@ FlatBlog::Application.routes.draw do
 
   root :to => 'articles#index'
   resources :articles do
-    resources :raitings
+    resources :ratings
     resources :comments
 
   end
