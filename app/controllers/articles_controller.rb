@@ -1,6 +1,9 @@
 class ArticlesController < ApplicationController
   before_filter :authenticate_user!, :only => [:new, :create, :edit, :update, :destroy] 
+  before_filter :initiate_variables, :only => [:show, :edit, :update, :destroy] 
 
+  
+  
   def index
     @articles = Article.all
 
@@ -11,8 +14,8 @@ class ArticlesController < ApplicationController
   end
 
   def show
-    @article = Article.find(params[:id])
-
+    
+    
     respond_to do |format|
       format.html 
       format.xml  { render :xml => @article }
@@ -21,7 +24,8 @@ class ArticlesController < ApplicationController
 
   def new
     @article = Article.new
-
+    @categories = Category.all
+    
     respond_to do |format|
       format.html 
       format.xml  { render :xml => @article }
@@ -29,7 +33,7 @@ class ArticlesController < ApplicationController
   end
 
   def edit
-    @article = Article.find(params[:id])
+    
   end
 
   def create
@@ -47,7 +51,7 @@ class ArticlesController < ApplicationController
   end
 
   def update
-    @article = Article.find(params[:id])
+    
 
     respond_to do |format|
       if @article.update_attributes(params[:article])
@@ -61,7 +65,7 @@ class ArticlesController < ApplicationController
   end
 
   def destroy
-    @article = Article.find(params[:id])
+    
     @article.destroy
 
     respond_to do |format|
@@ -69,4 +73,11 @@ class ArticlesController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  def initiate_variables
+    @article = Article.find(params[:id])
+    @category = Category.find(@article.category_id)
+  end
+  
 end
+

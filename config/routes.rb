@@ -1,13 +1,13 @@
 FlatBlog::Application.routes.draw do
 
-  
-
   devise_for :users
-  resources :articles do 
+
+  root :to => 'articles#index'
+  resources :articles do
+    resources :raitings
     resources :comments
+
   end
-  
-   root :to => "articles#index"
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

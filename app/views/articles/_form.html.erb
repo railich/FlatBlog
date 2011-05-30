@@ -13,12 +13,9 @@
 
   <div class="field">
     <%= f.label :category_id %><br />
-    <%= f.text_field :category_id %>
+    <%= collection_select(:article, :category_id, Category.all, :id, :name) %><br />
   </div>
-  <div class="field">
-    <%= f.label :user_id %><br />
-    <%= f.text_field :user_id %>
-  </div>
+  
   <div class="field">
     <%= f.label :title %><br />
     <%= f.text_field :title %>
@@ -35,6 +32,7 @@
     <%= f.label :tags %><br />
     <%= f.text_field :tags %>
   </div>
+    <%= hidden_field_tag 'article[user_id]', current_user.id %>
   <div class="actions">
     <%= f.submit %>
   </div>

@@ -2,13 +2,40 @@
 <html>
 <head>
   <title>FlatBlog</title>
-  <%= stylesheet_link_tag :all %>
+  <%= stylesheet_link_tag 'flatblog.css' %>
   <%= javascript_include_tag :defaults %>
   <%= csrf_meta_tag %>
 </head>
 <body>
-<p class="notice"><%= notice %></p>
-<p class="alert"><%= alert %></p>
+
+<!-- ------------------------------------------------------------------ -->
+  <div class="blog-title">
+    <div class="blog-name">FlatBlog</div>
+    <div class="blog-user">
+    <%if user_signed_in? %>
+      <!-- for signed user -->
+      Hi, <%= current_user.name %> (<%= current_user.email %>) &nbsp;|
+      <%= link_to 'New Article', new_article_path %>&nbsp;|
+      <%= link_to 'Edit profile', edit_user_registration_path %>&nbsp;|
+      <%= link_to 'Sign out', destroy_user_session_path %>&nbsp;
+
+     <% else %>
+      <!-- for unsigned user -->
+      <%= link_to 'Login', new_user_session_path %>&nbsp;|
+      <%= link_to 'Registration', new_user_registration_path %>&nbsp;
+     <% end %>
+    </div>
+    <div class="clear"></div>
+  </div>
+
+<!-- ------------------------------------------------------------------ -->
+<div class="system-notice">
+    &gt;&nbsp;
+    <span class="notice"><%= notice %></span>
+    <span class="alert"><%= alert %></span>
+</div> 
+
+
 <%= yield %>
 
 </body>
